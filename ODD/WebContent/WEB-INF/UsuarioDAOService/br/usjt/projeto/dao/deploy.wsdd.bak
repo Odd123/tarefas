@@ -1,0 +1,37 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from UsuarioDAOService WSDL service -->
+
+  <service name="UsuarioDAO" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://dao.projeto.usjt.br"/>
+      <parameter name="wsdlServiceElement" value="UsuarioDAOService"/>
+      <parameter name="schemaQualified" value="http://model.projeto.usjt.br,http://dao.projeto.usjt.br"/>
+      <parameter name="wsdlServicePort" value="UsuarioDAO"/>
+      <parameter name="className" value="br.usjt.projeto.dao.UsuarioDAOSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="UsuarioDAO"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="cadastrar" qname="operNS:cadastrar" xmlns:operNS="http://dao.projeto.usjt.br" returnQName="retNS:cadastrarReturn" xmlns:retNS="http://dao.projeto.usjt.br" returnType="rtns:int" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:usuario" xmlns:pns="http://dao.projeto.usjt.br" type="tns:Usuario" xmlns:tns="http://model.projeto.usjt.br"/>
+      </operation>
+      <parameter name="allowedMethods" value="cadastrar"/>
+
+      <typeMapping
+        xmlns:ns="http://model.projeto.usjt.br"
+        qname="ns:Usuario"
+        type="java:br.usjt.projeto.model.Usuario"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+  </service>
+</deployment>
